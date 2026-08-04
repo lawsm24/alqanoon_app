@@ -1,37 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'home_screen.dart';
-import 'firebase_service.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  try {
-    await Firebase.initializeApp();
-    await FirebaseService.initNotifications();
-  } catch (e) {
-    debugPrint('Firebase Error: $e');
-  }
-  runApp(const LawApp());
+void main() {
+  runApp(const MyApp());
 }
 
-class LawApp extends StatelessWidget {
-  const LawApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'منصة القانون',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),
     );
   }
 }
 
-// الواجهة الترحيبية المتحركة (Splash Screen)
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -39,24 +27,24 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-
-    // إعداد حركة ظهور الشعار والنصوص
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 2000),
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
+
     _controller.forward();
 
-    // التوجيه للواجهة الرئيسية بعد 3.5 ثانية
     Future.delayed(const Duration(milliseconds: 3500), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
@@ -75,50 +63,94 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo.shade900,
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
+      backgroundColor: const Color(0xFF1A1A1A),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(
-                Icons.gavel_rounded,
+                Icons.gavel,
                 size: 90,
-                color: Colors.amber,
+                color: Color(0xFFD4AF37),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               const Text(
                 'منصة القانون',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
                 ),
               ),
               const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white10,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'سيدعباس عقيل الحسيني',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+              const Text(
+                'سيدعباس عقيل الحسيني',
+                style: TextStyle(
+                  color: Color(0xFFD4AF37),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 48),
               const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                color: Color(0xFFD4AF37),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('منصة القانون'),
+        backgroundColor: const Color(0xFF1A1A1A),
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: Container(
+        color: const Color(0xFFF5F5F5),
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: [
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.push_pin, color: Colors.amber),
+                        SizedBox(width: 8),
+                        Text(
+                          'تنبيه هام',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    SizedBox(height: 8),
+                    Text(
+                      'أهلاً بك في تطبيق منصة القانون. يتم الآن تجهيز النسخة وتحديث الواجهات.',
+                      style: TextStyle(fontSize: 15, height: 1.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
