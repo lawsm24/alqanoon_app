@@ -23,6 +23,11 @@ jobs:
       - name: Create Android Files
         run: flutter create . --platforms=android
 
+      - name: Update minSdkVersion for Firebase
+        run: |
+          sed -i 's/minSdkVersion.*/minSdkVersion 21/' android/app/build.gradle || true
+          sed -i 's/flutter.minSdkVersion/21/' android/app/build.gradle || true
+
       - name: Install Dependencies
         run: flutter pub get
 
