@@ -1,6 +1,4 @@
-name: Build Android APK
-
-on:
+On:
   push:
     branches: [ main ]
 
@@ -29,7 +27,7 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --split-per-abi --no-pub
+        run: flutter build apk --split-per-abi
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
