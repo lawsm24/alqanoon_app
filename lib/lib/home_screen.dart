@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'sections/books_library.dart';
-import 'sections/books_market.dart';
-import 'sections/students_forum.dart';
-import 'sections/students_contributions.dart';
-import 'sections/law_colleges.dart';
+import 'books_library.dart';
+import 'books_market.dart';
+import 'students_forum.dart';
+import 'students_contributions.dart';
+import 'law_colleges.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,31 +14,26 @@ class HomeScreen extends StatelessWidget {
       {
         'title': 'مكتبة الكتب',
         'icon': Icons.menu_book_rounded,
-        'color': const Color(0xFF1A1A1A),
         'screen': const BooksLibraryScreen(),
       },
       {
         'title': 'سوق الكتب',
         'icon': Icons.storefront_rounded,
-        'color': const Color(0xFF1A1A1A),
         'screen': const BooksMarketScreen(),
       },
       {
         'title': 'منتدى الطلبة',
         'icon': Icons.forum_rounded,
-        'color': const Color(0xFF1A1A1A),
         'screen': const StudentsForumScreen(),
       },
       {
         'title': 'مساهمات الطلبة',
         'icon': Icons.school_rounded,
-        'color': const Color(0xFF1A1A1A),
         'screen': const StudentsContributionsScreen(),
       },
       {
         'title': 'تجمع كليات القانون',
         'icon': Icons.groups_rounded,
-        'color': const Color(0xFF1A1A1A),
         'screen': const LawCollegesScreen(),
       },
     ];
@@ -52,11 +47,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert, color: Colors.white),
-            onSelected: (value) {
-              if (value == 'admin') {
-                // دخول الآدمن مستقبلاً
-              }
-            },
+            onSelected: (value) {},
             itemBuilder: (context) => [
               const PopupMenuItem(
                 value: 'admin',
