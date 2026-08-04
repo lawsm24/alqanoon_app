@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'books_library.dart';
 import 'books_market.dart';
 import 'students_forum.dart';
 import 'students_contributions.dart';
@@ -102,6 +101,25 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+// شاشة مؤقتة لمكتبة الكتب حتى نضيف تفاصيلها
+class BooksLibraryScreen extends StatelessWidget {
+  const BooksLibraryScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('مكتبة الكتب'),
+        backgroundColor: const Color(0xFF1A1A1A),
+        foregroundColor: Colors.white,
+      ),
+      body: const Center(
+        child: Text('قسم مكتبة الكتب - قيد الإعداد', style: TextStyle(fontSize: 18)),
       ),
     );
   }
