@@ -41,21 +41,21 @@ class PostItem {
   });
 }
 
-// قائمة المنشورات الحالية (قاعدة بيانات محلية)
+// قائمة المنشورات الحالية
 List<PostItem> globalPosts = [
   PostItem(
     title: 'تنويه هام بشأن اللائحة الجديدة',
-    content: 'أهلاً بك في تطبيق منصة القانون. تم تحديث الواجهات بنجاح واستعادة كافة الأقسام المخصصة لنشر الأخبار والمستندات القانونية.',
+    content: 'أهلاً بك في تطبيق منصة القانون. تم تحديث الواجهات بنجاح واستعادة كافة الأقسام المخصصة لنشر الأخبار والكتب والمستندات القانونية.',
     category: 'تنبيهات',
     date: 'الآن',
     isPinned: true,
   ),
   PostItem(
-    title: 'تعديلات قانون العمل لسنة 2026',
-    content: 'يتضمن هذا الجزء تفاصيل التعديلات الأخيرة التي تمت على قانون العمل والإجراءات القانونية المتبعة.',
-    category: 'التشريعات',
+    title: 'كتاب شرح قانون العقوبات الميسر',
+    content: 'يتوفر الآن النسخة الكاملة من كتاب شرح قانون العقوبات للتحميل المباشر بصيغة PDF.',
+    category: 'الكتب القانونية',
     date: 'اليوم',
-    attachmentUrl: 'https://example.com/law.pdf',
+    attachmentUrl: 'https://example.com/book.pdf',
   ),
 ];
 
@@ -154,10 +154,10 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
   String _selectedCategory = 'الكل';
 
-  final List<String> categories = ['الكل', 'تنبيهات', 'التشريعات', 'أخبار قانونية', 'استشارات'];
+  // تم حذف "التشريعات" وإضافة "الكتب القانونية"
+  final List<String> categories = ['الكل', 'تنبيهات', 'الكتب القانونية', 'أخبار قانونية', 'استشارات'];
 
   @override
   Widget build(BuildContext context) {
@@ -172,15 +172,31 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         foregroundColor: Colors.white,
         centerTitle: true,
         actions: [
-          // زر دخول الآدمن للنشر
-          IconButton(
-            icon: const Icon(Icons.admin_panel_settings, color: Color(0xFFD4AF37)),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AdminPublishScreen()),
-              );
-              setState(() {}); // تحديث الشاشة بعد إضافة منشور
+          // قائمة 3 نقاط في الزاوية العلوية
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+            onSelected: (value) async {
+              if (value == 'admin') {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AdminPublishScreen()),
+                );
+                setState(() {});
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem<String>(
+                  value: 'admin',
+                  child: Row(
+                    children: [
+                      Icon(Icons.admin_panel_settings, color: Color(0xFFD4AF37)),
+                      SizedBox(width: 8),
+                      Text('لوحة النشر (الآدمن)'),
+                    ],
+                  ),
+                ),
+              ];
             },
           ),
         ],
@@ -265,8 +281,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                           const SizedBox(height: 12),
                           OutlinedButton.icon(
                             onPressed: () {},
-                            icon: const Icon(Icons.picture_as_pdf, color: Colors.red),
-                            label: const Text('عرض المستند المرفق'),
+                            icon: const Icon(Icons.menu_book, color: Color(0xFFD4AF37)),
+                            label: const Text('تحميل/عرض الكتاب المرفق'),
                           ),
                         ],
                         const SizedBox(height: 8),
@@ -302,7 +318,8 @@ class _AdminPublishScreenState extends State<AdminPublishScreen> {
   String _selectedCategory = 'تنبيهات';
   bool _isPinned = false;
 
-  final List<String> categories = ['تنبيهات', 'التشريعات', 'أخبار قانونية', 'استشارات'];
+  // تم تحديث الأقسام هنا أيضاً
+  final List<String> categories = ['تنبيهات', 'الكتب القانونية', 'أخبار قانونية', 'استشارات'];
 
   void _publishPost() {
     if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
@@ -348,7 +365,7 @@ class _AdminPublishScreenState extends State<AdminPublishScreen> {
             TextField(
               controller: _titleController,
               decoration: const InputDecoration(
-                labelText: 'عنوان المنشور',
+                labelText: 'عنوان المنشور / الكتاب',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -371,7 +388,7 @@ class _AdminPublishScreenState extends State<AdminPublishScreen> {
               controller: _contentController,
               maxLines: 5,
               decoration: const InputDecoration(
-                labelText: 'محتوى الخبر أو النص القانوني',
+                labelText: 'الوصف أو المحتوى',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -379,7 +396,7 @@ class _AdminPublishScreenState extends State<AdminPublishScreen> {
             TextField(
               controller: _attachmentController,
               decoration: const InputDecoration(
-                labelText: 'رابط ملف مرفق (PDF / صورة) - اختياري',
+                labelText: 'رابط الكتاب أو الملف (PDF) - اختياري',
                 border: OutlineInputBorder(),
               ),
             ),
