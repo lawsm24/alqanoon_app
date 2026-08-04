@@ -1,4 +1,4 @@
-On:
+on:
   push:
     branches: [ main ]
 
@@ -19,9 +19,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-
-      - name: Create Android Files
-        run: flutter create . --platforms=android
 
       - name: Install Dependencies
         run: flutter pub get
